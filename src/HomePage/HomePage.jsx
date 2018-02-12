@@ -89,19 +89,19 @@ class HomePage extends React.Component {
                 <nav style={{backgroundColor: 'lightGrey'}}>
                     <div className="nav-wrapper">
                       <img style={{maxWidth: '85%', maxHeight: '85%', marginTop: '5px', marginLeft: '5px'}} className="left-align" src="https://i.imgur.com/qnj3JkX.png"/>
-                      <form style={{marginLeft: '20%', marginTop: '-90px', maxWidth: '55%'}}>
-                        <div className="input-field" style={{maxWidth: '400pt', textColor: 'black'}}>
+                      <form style={{marginLeft: '55%', marginRight: '20px', height: '75%', marginTop: '-80px', maxWidth: '60%'}}>
+                        <div className="container input-field" style={{maxWidth: '400pt', textColor: 'black'}}>
                             <input id="search"
                                    style={{backgroundColor: 'white'}}
                                    onChange={this.handleInputChange}
                                    type="search" required></input>
-                            <label className="label-icon" htmlFor="search"><i style={{marginTop: '-10px', color: 'black'}} className="material-icons">search</i></label>
-                            <i className="material-icons">close</i>
+                            <label className="label-icon" htmlFor="search"><i style={{marginTop: '-20px', color: 'black'}} className="material-icons">search</i></label>
+                            <i className="material-icons" style={{marginTop: '-8px', color: 'black'}}>close</i>
                             <div id="searchResults" ></div>
                         </div>
                     </form>
                       <ul className="right">
-                        <li><Link to="/login" style={{marginTop: '-125px'}} className="btn grey btn-link">Logout</Link></li>
+                        <li><Link to="/login" style={{paddingLeft: '20px', marginTop: '-115px'}} className="btn grey btn-link">Logout</Link></li>
                       </ul>
                     </div>
 
