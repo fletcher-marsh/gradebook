@@ -46,20 +46,31 @@ class RegisterPage extends React.Component {
         const { registering  } = this.props;
         const { user, submitted } = this.state;
         return (
-            <div style={{marginTop: '15%'}} className="center-align">
+            <div style={{marginTop: '5%'}} className="container center-align">
                 <img className="center-align" src="https://i.imgur.com/qnj3JkX.png"/>
                 <h2>Register</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !user.username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={user.username} onChange={this.handleChange} />
-                        {submitted && !user.username &&
+                        <input type="text" 
+                               style={{textAlign: 'center', backgroundColor: 'white'}}
+                               className="form-control"
+                               name="username"
+                               value={user.username}
+                               onChange={this.handleChange}
+                        />
+                            {submitted && !user.username &&
                             <div className="help-block">Username is required</div>
                         }
                     </div>
                     <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
+                        <input type="password"
+                               className="form-control"
+                               name="password"
+                               style={{textAlign: 'center', backgroundColor: 'white'}}
+                               value={user.password}
+                               onChange={this.handleChange} />
                         {submitted && !user.password &&
                             <div className="help-block">Password is required</div>
                         }

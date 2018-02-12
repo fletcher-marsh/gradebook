@@ -7,32 +7,55 @@ export const userService = {
     getAll,
     getById,
     update,
+    addStudent,
     delete: _delete
 };
 
 function login(username, password) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-    };
-    console.log(requestOptions);
-    return fetch('http://localhost:8000/api/obtain_token', requestOptions)
-        .then(response => {
-            if (!response.ok) { 
-                return Promise.reject(response.statusText);
-            }
-            console.log(response.json());
-            return response.json();
-        })
-        .then(user => {
-            // login successful if there's a jwt token in the response
-            if (user && user.token) {
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('user', JSON.stringify(user));
-            }
-            return user;
-        });
+    // const requestOptions = {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json' },
+    //     body: JSON.stringify({ username, password })
+    // };
+    const payload = {
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "http://127.0.0.1:8000/api/obtain_token",
+        data: JSON.stringify({ username, password }),
+        dataType: "json"
+    }
+    // console.log(payload);
+    return $.ajax(payload, handleLogin);
+        // .then(response => {
+        //     if (!response.ok) { 
+        //         return Promise.reject(response.statusText);
+        //     }
+        //     console.log(response.json());
+        //     return response.json();
+        // })
+        // .then(user => {
+        //     // login successful if there's a jwt token in the response
+        //     if (user && user.token) {
+        //         // store user details and jwt token in local storage to keep user logged in between page refreshes
+        //         localStorage.setItem('user', JSON.stringify(user));
+        //     }
+        //     return user;
+        // });
+}
+
+function handleLogin(response) {
+    // console.log(response);
+    if (response.ok) {
+        var user = response.json();
+    }
+    else {
+        var user = Promise.reject(response.statusText);
+    }
+    console.log(user);
+    if (user && user.token) {
+        localStorage.setItem('user', JSON.stringify(user));
+    }
+    return user;
 }
 
 function logout() {
@@ -40,13 +63,36 @@ function logout() {
     localStorage.removeItem('user');
 }
 
-function getAll() {
-    const requestOptions = {
-        method: 'GET',
-        headers: authHeader()
-    };
+function getAll(user) {
+    // const requestOptions = {
+    //     method: 'GET',
+    //     headers: authHeader()
+    // };
+    var payload = {
+        type: "GET",
+        contentType: "application/json; charset=utf-8",
+        url: "http://127.0.0.1:8000/api/get_gradebook",
+        headers: {
+            "Authorization" : 'JWT ' + user['token']
+        },
+        dataType: "json"
+    }
+    return $.ajax(payload, handleResponse);
+    // return fetch('/users', requestOptions).then(handleResponse);
+}
 
-    return fetch('/users', requestOptions).then(handleResponse);
+function addStudent(user, newName, newAssign, newGrade) {
+    var payload = {
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "http://127.0.0.1:8000/api/add_entry",
+        headers: {
+            "Authorization" : 'JWT ' + user['token']
+        },
+        data: JSON.stringify({ student: newName, assignment: newAssign, grade: parseInt(newGrade) }),
+        dataType: "json"
+    }
+    return $.ajax(payload, handleResponse);
 }
 
 function getById(id) {
@@ -59,13 +105,21 @@ function getById(id) {
 }
 
 function register(user) {
-    const requestOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(user)
-    };
-    console.log(requestOptions);
-    return fetch('http://127.0.0.1:8000/api/register', requestOptions).then(handleResponse);
+    // const requestOptions = {
+    //     method: 'POST',
+    //     headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+    //     body: user
+    // };
+
+    const payload = {
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        url: "http://127.0.0.1:8000/api/register",
+        data: JSON.stringify(user),
+        dataType: "json"
+    }
+    return $.ajax(payload, handleResponse);
+    // return fetch('http://127.0.0.1:8000/api/register', requestOptions).then(handleResponse);
 }
 
 function update(user) {
@@ -74,8 +128,7 @@ function update(user) {
         headers: { ...authHeader(), 'Content-Type': 'application/json' },
         body: JSON.stringify(user)
     };
-
-    return fetch('/users/' + user.id, requestOptions).then(handleResponse);;
+    return fetch('/users/' + user.id, requestOptions).then(handleResponse);
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
@@ -89,10 +142,9 @@ function _delete(id) {
 }
 
 function handleResponse(response) {
-    console.log(response);
     if (!response.ok) { 
         return Promise.reject(response.statusText);
     }
-
+    console.log(this);
     return response.json();
 }

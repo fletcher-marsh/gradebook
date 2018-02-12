@@ -38,23 +38,24 @@ class LoginPage extends React.Component {
     }
 
     render() {
+        console.log('IN LOGIN RENDER');
         const { loggingIn } = this.props;
         const { username, password, submitted } = this.state;
         return (
-            <div style={{marginTop: '15%'}} className="center-align">
+            <div style={{marginTop: '5%'}} className="container center-align">
                 <img className="center-align" src="https://i.imgur.com/qnj3JkX.png"/>
                 <h2>Gradebook</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
                         <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={username} onChange={this.handleChange} />
+                        <input type="text" style={{textAlign: 'center', backgroundColor: 'white'}} className="form-control" name="username" value={username} onChange={this.handleChange} />
                         {submitted && !username &&
                             <div className="help-block">Username is required</div>
                         }
                     </div>
                     <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
                         <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={password} onChange={this.handleChange} />
+                        <input type="password" style={{textAlign: 'center', backgroundColor: 'white'}} className="form-control" name="password" value={password} onChange={this.handleChange} />
                         {submitted && !password &&
                             <div className="help-block">Password is required</div>
                         }

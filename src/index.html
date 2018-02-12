@@ -3,22 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <title>Gradebook</title>
+
+
     <link rel="icon" href="https://i.imgur.com/qnj3JkX.png"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
+
     <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
     <style>
         a { cursor: pointer; }
         .help-block { font-size: 12px; }
         body { 
-            background-color: #00A2FF; 
+            background-color: #7986cb; 
         }
         label {
             color: #000000;
         }
-        input {
-            text-align: center;
+        tbody {
+            display:block;
+            overflow:auto;
         }
+        thead, tbody tr {
+            display:table;
+            width:100%;
+            table-layout:fixed;
+        }
+        thead {
+            width: calc( 100% - 1em )
+        }
+        table {
+            width:100%;
+        }
+        
     </style>
 </head>
 <body>

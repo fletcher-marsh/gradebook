@@ -1,17 +1,31 @@
 import { userConstants } from '../_constants';
 
-export function users(state = {}, action) {
+export function assignments(state = {}, action) {
   switch (action.type) {
     case userConstants.GETALL_REQUEST:
       return {
-        loading: true
+        items: action.assignments
       };
     case userConstants.GETALL_SUCCESS:
+      console.log("yo, why tho")
       return {
-        items: action.users
+        items: action.assignments
       };
     case userConstants.GETALL_FAILURE:
       return { 
+        error: action.error
+      };
+    case userConstants.NEW_SUCCESS:
+      console.log(action)
+      return {
+        student: action.student
+      };
+      // return {
+      //   items: action.assignments
+      // };
+
+    case userConstants.NEW_FAILURE:
+      return {
         error: action.error
       };
     case userConstants.DELETE_REQUEST:

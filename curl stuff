@@ -1,0 +1,4 @@
+curl -H "Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo5LCJ1c2VybmFtZSI6ImEiLCJleHAiOjE1MTgzMjE2MzcsImVtYWlsIjoiIn0.wUjBcxb9XDfmUVLUD4hKH9BjWFUsD4wMG5Pns7LX83M" -H "Content-Type: application/json" -d '{"student": "edryer", "assignment": "math", "grade": 2.0}' http://localhost:8000/api/add_entry
+
+
+curl -H "Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo5LCJ1c2VybmFtZSI6ImEiLCJleHAiOjE1MTgzMTQ5NzQsImVtYWlsIjoiIn0.I2KRgiN5rxCizMfXcm6mFwdkTcAGDBFywtfnYpd50xs" http://localhost:8000/api/get_gradebook

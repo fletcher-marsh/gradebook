@@ -8,8 +8,10 @@ export const userActions = {
     logout,
     register,
     getAll,
-    delete: _delete
+    delete: _delete,
+    addStudent,
 };
+
 
 function login(username, password) {
     return dispatch => {
@@ -18,8 +20,9 @@ function login(username, password) {
         userService.login(username, password)
             .then(
                 user => { 
+                    localStorage.setItem('user', JSON.stringify(user));
                     dispatch(success(user));
-                    history.push('/');
+                    history.push('/grades');
                 },
                 error => {
                     dispatch(failure(error));
@@ -61,20 +64,48 @@ function register(user) {
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
 }
 
-function getAll() {
+function getAll(user) {
     return dispatch => {
-        dispatch(request());
-
-        userService.getAll()
+        userService.getAll(JSON.parse(user))
             .then(
-                users => dispatch(success(users)),
+                assignments => dispatch(success(assignments)),
                 error => dispatch(failure(error))
             );
     };
 
-    function request() { return { type: userConstants.GETALL_REQUEST } }
-    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
+    function success(assignments) { return { type: userConstants.GETALL_SUCCESS, assignments } }
     function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+}
+
+function addStudent(user, newName, newAssign, newGrade) {
+    function success(student) { return { type: userConstants.NEW_SUCCESS, student } }
+    function failure(error) { return { type: userConstants.NEW_FAILURE, error } }
+
+    function get_success(assignments) { return { type: userConstants.GETALL_SUCCESS, assignments } }
+    function get_failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
+
+    function onSuccess(dispatch, student) {
+        dispatch(success(student))
+
+        userService.getAll(user)
+                    .then( function (assignments) {
+                        dispatch(get_success(assignments))
+                    },
+                        error => dispatch(get_failure(error))
+                    );
+    }
+
+    function onFailure(dispatch, error) {
+        dispatch(failure(error))
+
+
+    }
+
+    return function (dispatch) {
+        userService.addStudent(user, newName, newAssign, newGrade)
+        .then((student) => onSuccess(dispatch, student), 
+              (error) => onFailure(dispatch, failure));
+    }
 }
 
 // prefixed function name with underscore because delete is a reserved word in javascript
