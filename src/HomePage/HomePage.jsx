@@ -13,6 +13,7 @@ class HomePage extends React.Component {
         this.addClass = this.addClass.bind(this);
         this.showAddClass = this.showAddClass.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleLogout = this.handleLogout.bind(this);
 
         this.state = {
             searchTerm: '',
@@ -31,18 +32,21 @@ class HomePage extends React.Component {
 
     handleInputChange(event) {
         let assgns = this.props.assignments.items.entries;
-
-        let newDisplay = assgns.filter(assignment =>
-                                    assignment.student.includes(event.target.value) ||
-                                    assignment.assignment.includes(event.target.value))
+        console.log("Input change: ", assgns);
+        let newDisplay = assgns.filter(function(assignment) {
+                                console.log(assignment);
+                                return(assignment.student.includes(event.target.value) ||
+                                assignment.assignment.includes(event.target.value))
+         });
+        console.log(newDisplay, this.state.curDisplay);
         this.setState({
             searchTerm: event.target.value,
             curDisplay: newDisplay
         });
     }
 
-    handleChange(e) {
-        const { name, value } = e.target;
+    handleChange(event) {
+        const { name, value } = event.target;
         this.setState({ [name]: value });
     }
 
@@ -69,6 +73,17 @@ class HomePage extends React.Component {
         });
 
     }
+    handleLogout(event) {
+        this.setState({
+            searchTerm: '',
+            curDisplay: [],
+            got: true,
+            modal: false,
+            newName: '',
+            newAssign: '',
+            newGrade: ''
+        });
+    }
 
 
     render() {
@@ -77,7 +92,8 @@ class HomePage extends React.Component {
         console.log(assignments.items, this.state.curDisplay);
         if (this.props.assignments.items && 
             this.state.curDisplay &&
-            this.props.assignments.items.entries.length > this.state.curDisplay.length) {
+            (this.searchTerm == '') &&
+            this.props.assignments.items.entries.length != this.state.curDisplay.length) {
             this.state.curDisplay = this.props.assignments.items.entries;
         }
         if (this.props.assignments.items && this.state.got) {
@@ -101,7 +117,7 @@ class HomePage extends React.Component {
                         </div>
                     </form>
                       <ul className="right">
-                        <li><Link to="/login" style={{paddingLeft: '20px', marginTop: '-115px'}} className="btn grey btn-link">Logout</Link></li>
+                        <li><Link to="/login" style={{paddingLeft: '20px', marginTop: '-115px'}} className="btn grey btn-link" onClick={this.handleLogout}>Logout</Link></li>
                       </ul>
                     </div>
 
